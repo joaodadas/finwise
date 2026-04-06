@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Finwise
+
+Academic finance platform powered by AI. Built as a university project to explore the intersection of financial analysis and artificial intelligence.
+
+## Tech Stack
+
+| Layer       | Technology                        |
+| ----------- | --------------------------------- |
+| Framework   | Next.js (App Router)              |
+| Language    | TypeScript 5                      |
+| UI          | shadcn/ui + Tailwind CSS v4       |
+| Auth        | better-auth (email/password)      |
+| Database    | PostgreSQL 16 (Docker)            |
+| ORM         | Drizzle ORM                       |
+| AI          | Vercel AI SDK + Anthropic Claude  |
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) 18+
+- [Docker](https://www.docker.com/) and Docker Compose
+- [Anthropic API Key](https://console.anthropic.com/) (optional for initial setup)
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the repository
+
+```bash
+git clone git@github.com:joaodadas/finwise.git
+cd finwise
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Start the database
+
+```bash
+docker compose up -d
+```
+
+This starts a PostgreSQL 16 container on port 5432 with:
+- User: `finwise`
+- Password: `finwise`
+- Database: `finwise`
+
+### 4. Configure environment variables
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and fill in any missing values. The defaults work for local development with Docker.
+
+### 5. Push the database schema
+
+```bash
+npm run db:push
+```
+
+This creates the authentication tables (`user`, `session`, `account`, `verification`).
+
+### 6. Start the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── (public)/        # Public routes (sign-in, sign-up)
+│   ├── (private)/       # Auth-protected routes (dashboard)
+│   └── api/auth/        # better-auth API handler
+├── ai/
+│   └── models.ts        # AI provider configuration
+├── components/
+│   ├── ui/              # shadcn/ui base components
+│   ├── login-form.tsx   # Sign-in form
+│   └── signup-form.tsx  # Sign-up form
+├── db/
+│   ├── schema.ts        # Drizzle ORM schema
+│   └── index.ts         # Database connection
+└── lib/
+    ├── auth.ts          # better-auth server config
+    └── auth-client.ts   # better-auth React client
+```
 
-## Learn More
+## Available Scripts
 
-To learn more about Next.js, take a look at the following resources:
+| Command              | Description                          |
+| -------------------- | ------------------------------------ |
+| `npm run dev`        | Start dev server with Turbopack      |
+| `npm run build`      | Production build                     |
+| `npm run start`      | Start production server              |
+| `npm run lint`       | Run ESLint                           |
+| `npm run db:push`    | Push schema to database              |
+| `npm run db:generate`| Generate migration files             |
+| `npm run db:migrate` | Run pending migrations               |
+| `npm run db:studio`  | Open Drizzle Studio                  |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Roadmap
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [ ] AI-powered financial analysis chat
+- [ ] Personal finance dashboard (income, expenses, budgets)
+- [ ] Stock market data integration
+- [ ] Financial report generation
+- [ ] Data visualization with charts
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is for academic purposes.
