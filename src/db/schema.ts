@@ -3,11 +3,16 @@ import {
   text,
   timestamp,
   boolean,
+  integer,
+  numeric,
 } from 'drizzle-orm/pg-core'
+
+import { sql } from 'drizzle-orm'
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
+  role: text('role').notNull().default('estudante'),
   email: text('email').notNull().unique(),
   emailVerified: boolean('email_verified').notNull().default(false),
   image: text('image'),
@@ -51,6 +56,19 @@ export const verification = pgTable('verification', {
   identifier: text('identifier').notNull(),
   value: text('value').notNull(),
   expiresAt: timestamp('expires_at').notNull(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+})
+
+export const asset = pgTable('asset', {
+  id: text('id').primaryKey(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id, { onDelete: 'cascade' }),
+  name: text('name').notNull(), // Ticker or name: PETR4, Tesouro Selic
+  type: text('type').notNull(), // Ação, FII, Renda Fixa
+  quantity: numeric('quantity').notNull().default('0'),
+  averagePrice: numeric('average_price').notNull().default('0'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 })
