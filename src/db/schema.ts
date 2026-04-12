@@ -3,7 +3,7 @@ import {
   text,
   timestamp,
   boolean,
-  integer,
+  numeric,
 } from 'drizzle-orm/pg-core'
 
 export const user = pgTable('user', {
@@ -53,6 +53,19 @@ export const verification = pgTable('verification', {
   identifier: text('identifier').notNull(),
   value: text('value').notNull(),
   expiresAt: timestamp('expires_at').notNull(),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+})
+
+export const asset = pgTable('asset', {
+  id: text('id').primaryKey(),
+  userId: text('user_id')
+    .notNull()
+    .references(() => user.id, { onDelete: 'cascade' }),
+  name: text('name').notNull(),
+  type: text('type').notNull(),
+  quantity: numeric('quantity').notNull().default('0'),
+  averagePrice: numeric('average_price').notNull().default('0'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
 })
