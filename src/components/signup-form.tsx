@@ -43,7 +43,7 @@ export function SignupForm() {
     const result = await authClient.signUp.email({
       name: nameRef.current!.value,
       email: emailRef.current!.value,
-      password: passwordRef.current!.value,
+      password: password,
       role: roleRef.current!.value,
     })
 
