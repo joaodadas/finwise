@@ -15,6 +15,7 @@ export const auth = betterAuth({
   user: {
     additionalFields: {
       role: { type: 'string', required: true },
+      investorProfile: { type: 'string', required: false },
     },
   },
   plugins: [nextCookies()],

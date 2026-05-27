@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { getAssets } from "@/app/actions/assets"
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
-import { Wallet, PieChart, TrendingUp, ArrowRight, Activity, DollarSign, Briefcase, BarChart2, Sparkles, BookOpen } from 'lucide-react'
+import { Wallet, PieChart, TrendingUp, ArrowRight, Activity, DollarSign, Briefcase, BarChart2, Sparkles, BookOpen, Compass } from 'lucide-react'
 import { ExchangeRates } from '@/components/exchange-rates'
 import { SearchModuleCard } from "@/components/search-module-card"; // Import do novo componente de busca
 
@@ -147,6 +147,32 @@ export default async function DashboardPage() {
             </Link>
           </CardContent>
         </Card>
+
+        {/* Distribuição com IA Card */}
+        <Card className="hover:border-cyan-500/50 transition-colors duration-300 group overflow-hidden relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0 relative z-10">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Distribuição com IA</CardTitle>
+            <div className="p-2 bg-cyan-500/10 rounded-full">
+              <Compass className="h-4 w-4 text-cyan-500" />
+            </div>
+          </CardHeader>
+          <CardContent className="relative z-10">
+            <div className="flex items-center gap-2 mb-2">
+              <PieChart className="h-6 w-6 text-cyan-500" />
+              <span className="text-lg font-bold">Análise</span>
+            </div>
+            <p className="text-sm text-muted-foreground mb-3">
+              Compare sua carteira com a referência por perfil
+            </p>
+            <Link href="/dashboard/distribuicao">
+              <Button size="sm" variant="outline" className="group/btn border-cyan-500/30 hover:border-cyan-500 hover:bg-cyan-500/10 hover:text-cyan-600 text-xs w-full">
+                Abrir análise
+                <ArrowRight className="ml-1.5 h-3.5 w-3.5 group-hover/btn:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
       </div>
         {/* Search Module Card */}
         <SearchModuleCard />
@@ -213,7 +239,12 @@ export default async function DashboardPage() {
 
         <Card className="col-span-1 lg:col-span-3 shadow-sm hover:shadow-md transition-shadow">
           <CardHeader>
-            <CardTitle className="text-xl">Distribuição</CardTitle>
+            <div className="flex flex-row items-center justify-between gap-2">
+              <CardTitle className="text-xl">Distribuição</CardTitle>
+              <Link href="/dashboard/distribuicao" className="text-xs font-medium text-primary hover:underline">
+                Ver análise com IA →
+              </Link>
+            </div>
             <CardDescription>Seus ativos por categoria de investimento</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
