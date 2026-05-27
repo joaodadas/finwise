@@ -49,7 +49,7 @@ export function SearchModuleCard() {
         <DialogHeader>
           <DialogTitle className="text-xl">Pesquisa Inteligente de Ativos</DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Descreva o que você procura. Ex: "Ações do setor de energia com yield maior que 5%"
+            Descreva o que você procura.
           </DialogDescription>
         </DialogHeader>
         

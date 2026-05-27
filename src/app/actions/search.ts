@@ -5,29 +5,34 @@ import { generateObject } from 'ai';
 import { z } from 'zod';
 import { db } from "@/db";
 import { asset } from "@/db/schema"; 
-import { and, ilike } from "drizzle-orm"; // <-- Note que removemos o 'eq' e vamos usar 'ilike' para tudo
+import { and, ilike } from "drizzle-orm"; 
 
 export async function searchAssetsWithAI(userQuery: string) {
   const { object: filters } = await generateObject({
-    model: google('gemini-2.5-flash'), 
-    temperature: 0, 
-    // Atualizamos o System Prompt para a IA converter Bitcoin em BTC, Weg em WEGE3, etc.
-    system: "Você é um assistente financeiro. Extraia filtros para o banco de dados. Regras: 1) O campo 'type' deve ser a categoria em português (ex: Ação, Cripto, Renda Fixa). 2) Se o usuário buscar o nome de uma empresa ou criptomoeda conhecida, converta o 'keyword' para o seu Ticker/Sigla de mercado (ex: 'Bitcoin' vira 'BTC', 'Weg' vira 'WEGE3').",
+    model: google('gemini-2.5-flash'),
+    temperature: 0,
+    system: "Você é um assistente financeiro especializado do FinWise. Sua tarefa é extrair filtros precisos para busca em banco de dados.\n\n" +
+            "REGRAS PARA O CAMPO 'type':\n" +
+            "Classifique a categoria do ativo usando EXATAMENTE um dos seguintes termos:\n" +
+            "- 'Ação' (ex: papéis da bolsa, empresas)\n" +
+            "- 'FII' (Mapeie termos como: fundo imobiliário)\n" +
+            "- 'Renda Fixa' (Mapeie termos como: cdb, tesouro direto, selic)\n" +
+            "- 'Cripto' (Mapeie termos como: criptomoeda, bitcoin, btc, eth, tokens)\n\n" +
+            "REGRAS PARA O CAMPO 'keyword':\n" +
+            "- Se o usuário citar uma empresa ou moeda, converta para a Sigla/Ticker (ex: 'Bitcoin' vira 'BTC', 'Weg' vira 'WEGE3').",
     prompt: userQuery,
     schema: z.object({
-      type: z.string().optional().describe("Categoria do ativo (Ação, Cripto, Renda Fixa)"),
-      keyword: z.string().optional().describe("Ticker ou palavra-chave (ex: BTC, WEGE3)"),
+      type: z.string().optional().describe("Categoria do ativo (Ação, FII, Renda Fixa ou Cripto)"),
+      keyword: z.string().optional().describe("Ticker ou palavra-chave (ex: WEGE3, BTC)"),
     })
   });
 
   const conditions = [];
   
-  // Usar 'ilike' resolve o problema do "Cripto" vs "cripto"
   if (filters.type) {
     conditions.push(ilike(asset.type, `%${filters.type}%`));
   }
   
-  // Vai buscar por '%BTC%' e encontrar tanto 'BTC' quanto 'BTC-USD'
   if (filters.keyword) {
     conditions.push(ilike(asset.name, `%${filters.keyword}%`));
   }
