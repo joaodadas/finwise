@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Button } from "@/components/ui/button"
 import { Wallet, PieChart, TrendingUp, ArrowRight, Activity, DollarSign, Briefcase, BarChart2, Sparkles, BookOpen } from 'lucide-react'
 import { ExchangeRates } from '@/components/exchange-rates'
+import { SearchModuleCard } from "@/components/search-module-card";
 
 export default async function DashboardPage() {
   const assets = await getAssets()
@@ -147,7 +148,9 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-
+        {/* Search Module Card */}
+        <SearchModuleCard />
+        
       {/* Recentes / Detalhes */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7 mt-4">
         <Card className="col-span-1 lg:col-span-4 shadow-sm hover:shadow-md transition-shadow">
