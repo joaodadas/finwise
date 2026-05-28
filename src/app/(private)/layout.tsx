@@ -3,6 +3,7 @@ import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { NewsCarousel } from '@/components/news-carousel'
 import { BackToHome } from '@/components/back-to-home'
+import { LogoutButton } from '@/components/logout-button'
 
 export default async function PrivateLayout({
   children,
@@ -20,7 +21,12 @@ export default async function PrivateLayout({
   return (
     <div className="flex flex-col min-h-screen">
       <NewsCarousel />
-      <BackToHome />
+      <div className="flex justify-between items-center px-6 pt-3">
+        <BackToHome />
+        <div className="ml-auto">
+          <LogoutButton />
+        </div>
+      </div>
       {children}
     </div>
   )

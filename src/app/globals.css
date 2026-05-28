@@ -275,7 +275,6 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin: 12px 24px 0;
   padding: 6px 14px;
   width: fit-content;
   font-size: 13px;
@@ -294,6 +293,30 @@
   background: oklch(0.18 0.02 250);
   border-color: oklch(0.6 0.15 250 / 40%);
   box-shadow: 0 0 12px oklch(0.5 0.15 250 / 15%);
+}
+
+/* ── Logout Button ────────────────────────────────────────────────────────── */
+
+.logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: oklch(0.65 0 0);
+  background: oklch(0.15 0 0);
+  border: 1px solid oklch(1 0 0 / 8%);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  color: oklch(0.98 0 0);
+  background: oklch(0.25 0.08 25);
+  border-color: oklch(0.7 0.2 25 / 40%);
+  box-shadow: 0 0 12px oklch(0.7 0.2 25 / 15%);
 }
 
 /* ── Exchange Rates Widget ────────────────────────────────────────────────── */
@@ -334,4 +357,4 @@
 
 .exchange-rate-chip .rate-change.negative {
   color: oklch(0.65 0.2 25);
-}
+}
