@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation'
 export function SignupForm() {
   const [loading, setLoading] = useState(false)
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const router = useRouter()
   const nameRef = useRef<HTMLInputElement>(null)
   const emailRef = useRef<HTMLInputElement>(null)
@@ -40,6 +41,15 @@ export function SignupForm() {
       setLoading(false)
       return
     }
+
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match', {
+        description: 'Please ensure both passwords match.',
+      })
+      setLoading(false)
+      return
+    }
+
     const result = await authClient.signUp.email({
       name: nameRef.current!.value,
       email: emailRef.current!.value,
@@ -110,6 +120,16 @@ export function SignupForm() {
               ref={passwordRef}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Input
+              id="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
           </div>
